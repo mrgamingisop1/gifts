@@ -48,21 +48,21 @@ body {
   left: 50%;
   top: 50%;
 
-  transform: translate(-50%, -50%) scale(0.52);
+  transform: translate(-50%, -40%) scale(0.52);
   transform-origin: center center;
 }
 
 /* Mobile */
 @media screen and (max-width: 768px) {
   #canvas {
-    transform: translate(-50%, -50%) scale(0.32);
+    transform: translate(-50%, -40%) scale(0.32);
   }
 }
 
 #text {
   width: 180px;
   left: 20px;
-  top: 135px;
+  top: 145px;
   position: absolute;
   z-index: 5;
 }
@@ -72,7 +72,7 @@ body {
   color: rgb(210, 255, 255);
 
   line-height: 20px;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: bold;
 
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.25);
@@ -80,11 +80,11 @@ body {
 
 #clock-box {
   position: absolute;
-  width: 200px;
+  width: 250px;
   left: 40px;
   bottom: 80px;
 
-  font-size: 15px;
+  font-size: 18px;
   line-height: 30px;
 
   display: none;
@@ -96,7 +96,7 @@ body {
 }
 
 #clock .digit {
-  font-size: 15px;
+  font-size: 18px;
 }
 
 .photo {
