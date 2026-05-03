@@ -198,22 +198,42 @@
             }));
             function updateAgeClock() {
 
-                // BIRTH DATE
-                const birthDate = new Date("2009-05-29T00:00:00");
-
+                const birthDate = new Date("2009-05-04T00:00:00");
                 const now = new Date();
 
-                let diff = now - birthDate;
+                let years = now.getFullYear() - birthDate.getFullYear();
 
-                const seconds = Math.floor(diff / 1000) % 60;
-                const minutes = Math.floor(diff / (1000 * 60)) % 60;
-                const hours = Math.floor(diff / (1000 * 60 * 60)) % 24;
+                let lastBirthday = new Date(
+                    now.getFullYear(),
+                    birthDate.getMonth(),
+                    birthDate.getDate()
+                );
 
-                const totalDays = Math.floor(diff / (1000 * 60 * 60 * 24));
+                if (now < lastBirthday) {
+                    years--;
 
-                const years = Math.floor(totalDays / 365);
+                    lastBirthday = new Date(
+                        now.getFullYear() - 1,
+                        birthDate.getMonth(),
+                        birthDate.getDate()
+                    );
+                }
 
-                const days = totalDays % 365;
+                let diff = now - lastBirthday;
+
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+                diff %= (1000 * 60 * 60 * 24);
+
+                const hours = Math.floor(diff / (1000 * 60 * 60));
+
+                diff %= (1000 * 60 * 60);
+
+                const minutes = Math.floor(diff / (1000 * 60));
+
+                diff %= (1000 * 60);
+
+                const seconds = Math.floor(diff / 1000);
 
                 document.getElementById("clock").innerHTML =
                     "You have been <span class='digit'>" + years + "</span> years, " +
