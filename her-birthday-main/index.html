@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday ❤️</title>
+
+    <link type="text/css" rel="stylesheet" href="file/default.css">
+
+    <script src="file/jquery.min.js"></script>
+    <script src="file/jscex.min.js"></script>
+    <script src="file/jscex-parser.js"></script>
+    <script src="file/jscex-jit.js"></script>
+    <script src="file/jscex-builderbase.min.js"></script>
+    <script src="file/jscex-async.min.js"></script>
+    <script src="file/jscex-async-powerpack.min.js"></script>
+    <script src="file/function.js" charset="utf-8"></script>
+    <script src="file/love.js" charset="utf-8"></script>
+
+    <script>
+        function playAudio() {
+            var audio = document.getElementById("myAudio");
+            audio.play();
+        }
+    </script>
+</head>
+
+<body>
+
+    <div class="background-glow"></div>
+
+    <div id="main">
+
+        <audio id="myAudio">
+            <source src="aud.mp3" type="audio/mp3" />
+        </audio>
+
+        <div id="wrap">
+
+            <div class="photo photo-left">
+                <img src="img.png" alt="Birthday Image">
+            </div>
+
+            <div class="photo photo-right">
+                <img src="img2.png" alt="Birthday Image">
+            </div>
+
+            <div id="text">
+                <div id="code">
+                    <span class="say">Hey you 💞</span><br>
+                    <span class="say">Happy Birthday 🎈</span><br>
+                    <span class="say">May God bless you 🍀</span><br>
+                    <span class="say">And give u many happiness 💕</span><br>
+                    <span class="say">Just saying... you're pretty awesome ❤️</span><br>
+                    <span class="say">Sending good vibes and maybe a wink 😏</span><br>
+                    <span class="say">Hope u have a great day today ❤️😘</span><br>
+                </div>
+            </div>
+
+            <div id="clock-box">
+                <span id="clock"></span>
+            </div>
+
+            <canvas id="canvas" width="1100" height="680"></canvas>
+
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            var canvas = $('#canvas');
+
+            if (!canvas[0].getContext) {
+                return false;
+            }
+
+            var width = canvas.width();
+            var height = canvas.height();
+
+            canvas.attr("width", width);
+            canvas.attr("height", height);
+
+            var opts = {
+                seed: {
+                    x: width / 2 - 20,
+                    color: "rgb(190, 26, 37)",
+                    scale: 2
+                },
+                branch: [
+                    [535, 680, 570, 250, 500, 200, 30, 100,
+                        [
+                            [540, 500, 455, 417, 340, 400, 13, 100,
+                                [
+                                    [450, 435, 434, 430, 394, 395, 2, 40]
+                                ]
+                            ],
+                            [550, 445, 600, 356, 680, 345, 12, 100,
+                                [
+                                    [578, 400, 648, 409, 661, 426, 3, 80]
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                bloom: {
+                    num: 700,
+                    width: 1080,
+                    height: 650,
+                },
+                footer: {
+                    width: 1200,
+                    height: 5,
+                    speed: 10,
+                }
+            };
+
+            var tree = new Tree(canvas[0], width, height, opts);
+            var seed = tree.seed;
+            var foot = tree.footer;
+
+            canvas.click(function (e) {
+
+                var offset = canvas.offset(), x, y;
+                const scale = 0.88;
+
+                x = (e.pageX - offset.left) / scale;
+                y = (e.pageY - offset.top) / scale;
+
+                if (seed.hover(x, y)) {
+
+                    playAudio();
+
+                    hold = 0;
+                    canvas.unbind("click");
+                    canvas.unbind("mousemove");
+                    canvas.removeClass('hand');
+                }
+            }).mousemove(function (e) {
+                var offset = canvas.offset(), x, y;
+                const scale = 0.88;
+
+                x = (e.pageX - offset.left) / scale;
+                y = (e.pageY - offset.top) / scale;
+                canvas.toggleClass('hand', seed.hover(x, y));
+            });
+
+            var hold = 1;
+
+            var seedAnimate = eval(Jscex.compile("async", function () {
+                seed.draw();
+                while (hold) {
+                    $await(Jscex.Async.sleep(10));
+                }
+                while (seed.canScale()) {
+                    seed.scale(0.95);
+                    $await(Jscex.Async.sleep(10));
+                }
+                while (seed.canMove()) {
+                    seed.move(0, 2);
+                    foot.draw();
+                    $await(Jscex.Async.sleep(10));
+                }
+            }));
+
+            var growAnimate = eval(Jscex.compile("async", function () {
+                do {
+                    tree.grow();
+                    $await(Jscex.Async.sleep(10));
+                } while (tree.canGrow());
+            }));
+
+            var flowAnimate = eval(Jscex.compile("async", function () {
+                do {
+                    tree.flower(2);
+                    $await(Jscex.Async.sleep(10));
+                } while (tree.canFlower());
+            }));
+
+            var moveAnimate = eval(Jscex.compile("async", function () {
+                tree.snapshot("p1", 240, 0, 610, 680);
+                while (tree.move("p1", 500, 0)) {
+                    foot.draw();
+                    $await(Jscex.Async.sleep(10));
+                }
+                foot.draw();
+                tree.snapshot("p2", 500, 0, 610, 680);
+
+                canvas.parent().css("background", "none");
+            }));
+            function updateAgeClock() {
+
+                // BIRTH DATE
+                const birthDate = new Date("2009-05-29T00:00:00");
+
+                const now = new Date();
+
+                let diff = now - birthDate;
+
+                const seconds = Math.floor(diff / 1000) % 60;
+                const minutes = Math.floor(diff / (1000 * 60)) % 60;
+                const hours = Math.floor(diff / (1000 * 60 * 60)) % 24;
+
+                const totalDays = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+                const years = Math.floor(totalDays / 365);
+
+                const days = totalDays % 365;
+
+                document.getElementById("clock").innerHTML =
+                    "You have been <span class='digit'>" + years + "</span> years, " +
+                    "<span class='digit'>" + days + "</span> days, " +
+                    "<span class='digit'>" + hours + "</span> hours, " +
+                    "<span class='digit'>" + minutes + "</span> minutes, " +
+                    "<span class='digit'>" + seconds + "</span> seconds old ❤️(approx xD)";
+            }
+
+            var textAnimate = eval(Jscex.compile("async", function () {
+
+                $("#code").show().typewriter();
+
+                $("#clock-box").fadeIn(500);
+
+                updateAgeClock();
+
+                setInterval(updateAgeClock, 1000);
+            }));
+
+            var runAsync = eval(Jscex.compile("async", function () {
+                $await(seedAnimate());
+                $await(growAnimate());
+                $await(flowAnimate());
+                $await(moveAnimate());
+                textAnimate().start();
+            }));
+
+            runAsync().start();
+        })();
+    </script>
+
+</body>
+
+</html>
