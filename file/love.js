@@ -699,15 +699,15 @@
             ctx.stroke();
 
             ctx.moveTo(0, 0);
-            ctx.scale(0.75, 0.75);
+            ctx.scale(1.2, 1.2);
             ctx.font = "12px,Verdana";
 
             // ✨ Glow effect
             ctx.shadowColor = "#ffffff";
             ctx.shadowBlur = 15;
 
-            ctx.fillText("Click Me:) ", 30, -5);
-            ctx.fillText("Birthday Queen !", 28, 10);
+            ctx.fillText("Click Me :) ", 20, -5);
+            ctx.fillText("Birthday Queen !", 20, 10);
 
             // reset shadow (important)
             ctx.shadowBlur = 0;
